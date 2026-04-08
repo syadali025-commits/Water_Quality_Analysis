@@ -143,6 +143,19 @@
   background: rgba(248, 249, 250, 0.8);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: #000000 !important;
+}
+
+.input-group input[type="number"] {
+  color: #000000 !important;
+}
+
+.input-group input[type="number"]:focus {
+  color: #000000 !important;
+}
+
+.input-group input[type="number"]:hover {
+  color: #000000 !important;
 }
 
 .input-group input:focus {
@@ -151,6 +164,7 @@
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
+  color: #000000;
 }
 
 .input-group input:hover {
@@ -158,6 +172,7 @@
   background: rgba(255, 255, 255, 0.9);
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  color: #000000;
 }
 
 .input-group input::placeholder {
@@ -168,6 +183,7 @@
 .input-group input.error {
   border-color: #e74c3c;
   background: rgba(231, 76, 60, 0.05);
+  color: #000000;
 }
 
 .input-group input.error:focus,
