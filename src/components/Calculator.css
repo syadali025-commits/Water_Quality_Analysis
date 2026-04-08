@@ -1,0 +1,948 @@
+.water-quality-calculator {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.calculator-title {
+  color: #1a365d;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.calculator-selector {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.selector-btn {
+  padding: 0.75rem 1.25rem;
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  background: rgba(255, 255, 255, 0.8);
+  color: #667eea;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.selector-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.selector-btn:hover::before {
+  left: 100%;
+}
+
+.selector-btn:hover {
+  border-color: rgba(37, 99, 235, 0.5);
+  background: rgba(37, 99, 235, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+}
+
+.selector-btn.active {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+.selector-btn.active:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+}
+
+.input-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-heading {
+  color: #1a365d;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(26, 54, 93, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.section-heading::before {
+  content: '';
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  border-radius: 2px;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.input-grid.single-column {
+  grid-template-columns: 1fr;
+  max-width: 400px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  color: #34495e;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.input-group input {
+  padding: 1rem 1.25rem;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(248, 249, 250, 0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.input-group input:hover {
+  border-color: rgba(102, 126, 234, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.input-group input::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.input-group input.error {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.05);
+}
+
+.input-group input.error:focus,
+.input-group input.notation-exponent.error:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.scientific-notation-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.scientific-notation-input::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+  border-radius: 1px;
+}
+
+.scientific-notation-input input {
+  flex: 0 0 auto;
+  width: 80px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.scientific-notation-input input.notation-exponent {
+  flex: 0 0 auto;
+  width: 45px;
+  font-size: 0.85rem;
+  position: relative;
+  top: -6px;
+  background: rgba(118, 75, 162, 0.08);
+  border: 2px solid rgba(118, 75, 162, 0.4);
+  border-radius: 6px;
+  padding: 3px 8px;
+  color: #764ba2;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(118, 75, 162, 0.15);
+}
+
+.notation-operator {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 0.25rem;
+  position: relative;
+  top: 1px;
+}
+
+.notation-base {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  position: relative;
+}
+
+.notation-base::after {
+  content: attr(data-exponent);
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  color: #764ba2;
+  font-weight: 600;
+  font-size: 0.75rem;
+  background: rgba(118, 75, 162, 0.1);
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid rgba(118, 75, 162, 0.2);
+}
+
+.scientific-display {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.15);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 1rem;
+  color: #2c3e50;
+  animation: slideUp 0.4s ease-out;
+  position: relative;
+}
+
+.scientific-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.4), transparent);
+}
+
+.display-value {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 1.1rem;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.display-operator,
+.display-equals {
+  color: #6c757d;
+  font-weight: 600;
+  margin: 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.display-base-container {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+}
+
+.display-base {
+  color: #764ba2;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.display-exponent {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  color: #764ba2;
+  font-weight: 600;
+  font-size: 0.7rem;
+  background: rgba(118, 75, 162, 0.1);
+  padding: 1px 3px;
+  border-radius: 2px;
+  border: 1px solid rgba(118, 75, 162, 0.2);
+}
+
+.display-result {
+  color: #2c3e50;
+  font-weight: 800;
+  margin-left: 0.75rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid rgba(102, 126, 234, 0.3);
+  font-size: 1rem;
+  background: rgba(102, 126, 234, 0.05);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  display: block;
+  animation: shake 0.5s ease-in-out;
+}
+
+.alkalinity-error {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.calculate-btn {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.calculate-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.calculate-btn:hover::before {
+  left: 100%;
+}
+
+.calculate-btn:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(102, 126, 234, 0.35);
+}
+
+.calculate-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
+}
+
+@media (max-width: 768px) {
+  .water-quality-calculator {
+    margin: 1rem;
+    padding: 1.5rem;
+    max-width: none;
+  }
+  
+  .calculator-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .section-heading {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .calculator-selector {
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .selector-btn {
+    padding: 0.625rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .input-section {
+    margin-bottom: 2rem;
+  }
+  
+  .input-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .input-grid.single-column {
+    max-width: none;
+  }
+  
+  .input-group input {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .scientific-notation-input {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    justify-content: center;
+  }
+  
+  .scientific-notation-input input {
+    min-width: 60px;
+    font-size: 0.9rem;
+  }
+  
+  .scientific-notation-input input.notation-exponent {
+    font-size: 0.75rem;
+    top: -4px;
+    width: 40px;
+    padding: 2px 6px;
+  }
+  
+  .notation-operator {
+    font-size: 1rem;
+    margin: 0 0.125rem;
+  }
+  
+  .notation-base {
+    font-size: 0.95rem;
+  }
+  
+  .notation-exponent-label {
+    font-size: 0.65rem;
+    top: -6px;
+    right: -8px;
+  }
+  
+  .scientific-display {
+    font-size: 0.85rem;
+    padding: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .display-value {
+    font-size: 0.95rem;
+  }
+  
+  .display-operator,
+  .display-equals {
+    font-size: 0.9rem;
+    margin: 0 0.25rem;
+  }
+  
+  .display-base {
+    font-size: 0.9rem;
+  }
+  
+  .display-exponent {
+    font-size: 0.6rem;
+    top: -4px;
+    right: -6px;
+  }
+  
+  .display-result {
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+    padding: 0.375rem 0.5rem;
+  }
+  
+  .calculate-btn {
+    font-size: 1rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
+.results-highlight {
+  margin-top: 3rem;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.8s ease-out;
+}
+
+.results-title {
+  color: #2c3e50;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.result-header h4 {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.result-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.h-concentration-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(102, 126, 234, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(102, 126, 234, 0.15);
+  width: 100%;
+}
+
+.h-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.h-value {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.05);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.water-contribution-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, rgba(243, 156, 18, 0.1) 0%, rgba(230, 126, 34, 0.1) 100%);
+  border: 1px solid rgba(243, 156, 18, 0.3);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.note-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.note-text {
+  font-size: 0.85rem;
+  color: #856404;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.result-value-large {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2c3e50;
+  text-align: center;
+  line-height: 1;
+}
+
+.result-value-medium {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #3498db;
+  text-align: center;
+}
+
+.ph-result {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.85) 100%);
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  margin-bottom: 2rem;
+}
+
+.ph-result.acidic {
+  border-color: rgba(231, 76, 60, 0.3);
+  background: linear-gradient(135deg, rgba(255, 248, 248, 0.9) 0%, rgba(252, 235, 235, 0.85) 100%);
+}
+
+.ph-result.neutral {
+  border-color: rgba(243, 156, 18, 0.3);
+  background: linear-gradient(135deg, rgba(255, 253, 248, 0.9) 0%, rgba(252, 248, 235, 0.85) 100%);
+}
+
+.ph-result.basic {
+  border-color: rgba(52, 152, 219, 0.3);
+  background: linear-gradient(135deg, rgba(248, 252, 255, 0.9) 0%, rgba(235, 248, 252, 0.85) 100%);
+}
+
+.ph-status-large {
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.secondary-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .results-highlight {
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .results-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .result-value-large {
+    font-size: 2rem;
+  }
+  
+  .result-value-medium {
+    font-size: 1.5rem;
+  }
+  
+  .h-concentration-display {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .h-value {
+    font-size: 1rem;
+    padding: 0.2rem 0.5rem;
+  }
+  
+  .water-contribution-note {
+    padding: 0.5rem 0.75rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
+  }
+  
+  .note-text {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  
+  .secondary-results {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .result-card {
+    padding: 1.25rem;
+  }
+  
+  .ph-status-large {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .water-quality-calculator {
+    margin: 1.5rem;
+    padding: 2rem;
+  }
+  
+  .input-grid {
+    gap: 1.25rem;
+  }
+  
+  .results-highlight {
+    padding: 2rem;
+  }
+  
+  .result-value-large {
+    font-size: 2.2rem;
+  }
+  
+  .result-value-medium {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .water-quality-calculator {
+    margin: 0.5rem;
+    padding: 1rem;
+    max-width: none;
+  }
+  
+  .calculator-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .calculator-selector {
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+  }
+  
+  .selector-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .section-heading {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .input-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .input-group input {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .scientific-notation-input {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 8px;
+  }
+  
+  .scientific-notation-input::before {
+    display: none;
+  }
+  
+  .scientific-notation-input input.notation-exponent {
+    min-width: auto;
+    top: 0;
+    position: static;
+    background: rgba(118, 75, 162, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(118, 75, 162, 0.3);
+  }
+  
+  .notation-operator {
+    margin: 0 0.25rem;
+  }
+  
+  .notation-base {
+    display: inline;
+  }
+  
+  .scientific-display {
+    font-size: 0.8rem;
+    padding: 0.75rem;
+    text-align: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .scientific-display .display-operator,
+  .scientific-display .display-base {
+    display: inline;
+  }
+  
+  .display-base-container {
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .display-exponent {
+    position: static;
+    background: rgba(118, 75, 162, 0.15);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 0.65rem;
+  }
+  
+  .calculate-btn {
+    font-size: 0.95rem;
+    padding: 0.875rem 1.25rem;
+  }
+  
+  .results-highlight {
+    padding: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .results-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .result-value-large {
+    font-size: 1.8rem;
+  }
+  
+  .result-value-medium {
+    font-size: 1.3rem;
+  }
+  
+  .h-concentration-display {
+    padding: 0.375rem 0.5rem;
+  }
+  
+  .h-label {
+    font-size: 0.75rem;
+  }
+  
+  .h-value {
+    font-size: 0.9rem;
+    padding: 0.15rem 0.375rem;
+  }
+  
+  .water-contribution-note {
+    padding: 0.375rem 0.5rem;
+  }
+  
+  .note-icon {
+    font-size: 0.875rem;
+  }
+  
+  .note-text {
+    font-size: 0.75rem;
+  }
+  
+  .result-card {
+    padding: 1rem;
+  }
+  
+  .result-header h4 {
+    font-size: 1rem;
+  }
+  
+  .result-icon {
+    font-size: 1.25rem;
+  }
+  
+  .ph-status-large {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.85rem;
+  }
+}
